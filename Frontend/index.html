@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Report Management</title>
+    <link href="/main.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+    <script src="/app.js"></script>
+</head>
+
+<body>
+    <script>
+        checkTokenInApp();
+    </script>
+    <div id="main_content" class="container">
+        <div class="row">
+            <div>
+                <p style="margin-right: -10px; color: blue; cursor: pointer;" class="float-end" onClick="logout()">logout</p>
+            </div>
+        </div>
+        <div class="row">
+            <div>
+                <button style="margin-left: -10px;" class="btn btn-success float-start ml-1" type="button" onClick="loadAll()">Refresh All Data</button>
+                <button style="margin-right: -10px;" class="btn btn-info float-end ml-1" type="button" onClick="showNewModal()">Generate Report</button>
+            </div>
+        </div>
+        <div class="row">
+            <table class="table table-striped" id="report_table">
+                <thead>
+                    <td>#</td>
+                    <td>Description</td>
+                    <td>Created Time</td>
+                    <td>Updated Time</td>
+                    <td>PDF Report</td>
+                    <td>Excel Report</td>
+                    <td>Download</td>
+                    <td>Update</td>
+                    <td>Delete</td>
+                </thead>
+                <tbody id="report_list_body"></tbody>
+            </table>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="create_report_model" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Create new report</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label>Input Data: (Json)</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <textarea id="input_create_data" rows="10">
+{
+    "description":"",
+    "headers":[],
+    "data":[]
+}
+                            </textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            Example:(copy this to above)
+                            <pre>
+{
+    "description":"Student Math Course Report",
+    "headers":["Student #","Name","Class","Score"],
+    "data":[["s-008","Sarah","Class-A","B"], ["s-009","Thomas","Class-A","B-"]]
+}
+</pre>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary pull-right" id="create_report" onClick="createReport(false)">Create Using Sync API</button>
+                        <button type="button" class="btn btn-primary pull-right" id="create_report_async" onClick="createReport(true)">Create Using Async API</button>
+                        <button type="button" class="btn btn-secondary pull-left" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> 
+
+    <div class="modal fade" id="update_report_model" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Update Report</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label>Input Data: (Json)</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <textarea id="input_update_data" rows="10">
+                            </textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary pull-right" id="update_report">Update</button>
+                        <button type="button" class="btn btn-secondary pull-left" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> 
+</body>
+
+</html>
